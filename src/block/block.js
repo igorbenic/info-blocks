@@ -53,7 +53,10 @@ registerBlockType( 'simple-blocks/info-block', {
 		},
 		padding: {
 			type: 'string',
-			default: '10'
+			default: '10',
+			selector: '[data-padding]',
+			source: 'attribute',
+			attribute: 'data-padding'
 		},
 		paddingUnit: {
 			type: 'string',
@@ -65,11 +68,17 @@ registerBlockType( 'simple-blocks/info-block', {
 		},
 		iconSize: {
 			type: 'string',
-			default: '20'
+			default: '20',
+			selector: 'div.icon',
+			source: 'attribute',
+			attribute: 'data-iconsize'
 		},
 		iconSpace: {
 			type: 'string',
-			default: '20'
+			default: '20',
+			selector: 'div.icon',
+			source: 'attribute',
+			attribute: 'data-iconspace'
 		}
 	},
 	/**
@@ -83,12 +92,14 @@ registerBlockType( 'simple-blocks/info-block', {
 	edit: function( props ) {
 		const { setAttributes, attributes } = props;
 		const { text, bgcolor, color, padding, paddingUnit, icon, iconSize, iconSpace } = attributes;
+		 console.log( attributes );
 		const style = {
 			backgroundColor: bgcolor,
 			color: color,
 			padding: padding + paddingUnit
 		};
 		const marginRight = iconSpace + 'px';
+	
 		// Creates a <p class='wp-block-cgb-block-info-blocks'></p>.
 		return (
 			<Fragment>
@@ -137,7 +148,7 @@ registerBlockType( 'simple-blocks/info-block', {
 					</PanelBody>
 				</InspectorControls>
 				<div className={ props.className } style={ style }>
-					{ icon && <div style={ { marginRight: marginRight } }><Icon icon={icon} size={iconSize}  /></div> }
+					{ icon && <div class="icon" style={ { marginRight: marginRight } }><Icon icon={icon} size={iconSize}  /></div> }
 					<RichText
 						value = { text }
 						onChange = { ( text ) => setAttributes( { text } ) }
@@ -164,9 +175,10 @@ registerBlockType( 'simple-blocks/info-block', {
 			padding: padding + paddingUnit
 		};
 		const marginRight = iconSpace + 'px';
+		
 		return (
-			<div className={ props.className } style={ style }>
-				{ icon && <div style={ { marginRight: marginRight } }><Icon icon={icon} size={iconSize}  /></div> }
+			<div data-padding={ padding } className={ props.className } style={ style }>
+				{ icon && <div data-iconsize={ iconSize } data-iconspace={ iconSpace } class="icon" style={ { marginRight: marginRight } }><Icon icon={icon} size={iconSize}  /></div> }
 				<RichText.Content tagName="div" value={ text } />
 			</div>
 		);
